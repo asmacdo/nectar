@@ -226,7 +226,7 @@ class TestFetch(unittest.TestCase):
         self.downloader._fetch(req, session)
 
         session.get.assert_called_once_with(URL, headers={'pulp_header': 'awesome!'},
-                                            timeout=(self.config.connect_timeout, self.config.read_timeout))
+                                            timeout=self.config.timeout)
 
     def test_response_headers(self):
         """
@@ -260,7 +260,7 @@ class TestFetch(unittest.TestCase):
         self.assertEqual(report.state, report.DOWNLOAD_SUCCEEDED)
         self.assertEqual(report.bytes_downloaded, 3)
         session.get.assert_called_once_with(URL, headers={'accept-encoding': ''},
-                                            timeout=(self.config.connect_timeout, self.config.read_timeout))
+                                            timeout=self.config.timeout)
 
     def test_normal_content_encoding(self):
         URL = 'http://pulpproject.org/primary.xml'
@@ -277,8 +277,7 @@ class TestFetch(unittest.TestCase):
         self.assertEqual(report.bytes_downloaded, 3)
         # passing "None" for headers lets the requests library add whatever
         # headers it thinks are appropriate.
-        session.get.assert_called_once_with(URL, headers={}, timeout=(self.config.connect_timeout,
-                                                    self.config.read_timeout))
+        session.get.assert_called_once_with(URL, headers={}, timeout=self.config.timeout)
 
     def test_fetch_with_connection_error(self):
         """

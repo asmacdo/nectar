@@ -200,9 +200,7 @@ class HTTPThreadedDownloader(Downloader):
             if netloc in self.failed_netlocs:
                 raise SkipLocation()
 
-            response = session.get(
-                request.url, headers=headers, timeout=(self.config.connect_timeout, self.config.read_timeout)
-            )
+            response = session.get(request.url, headers=headers, timeout=self.config.timeout)
 
             report.headers = response.headers
 

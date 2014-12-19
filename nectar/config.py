@@ -30,7 +30,7 @@ class DownloaderConfig(object):
             ssl_validation=True, proxy_url=None, proxy_port=None, proxy_username=None,
             proxy_password=None, max_speed=None, headers=None, buffer_size=None,
             progress_interval=None, use_hard_links=False, use_sym_links=False,
-            connect_timeout=6.05, read_timeout=27):
+            timeout=27):
         """
         Initialize the DownloaderConfig. All parameters are optional. Not all downloaders use each
         of the configuration items, so for each parameter documented below, the downloaders that
@@ -101,15 +101,12 @@ class DownloaderConfig(object):
         :param use_sym_links:        If True, use symlinks instead of copying files. Defaults to
                                      False. (Local)
         :type  use_sym_links:        bool
-        :param connect_timeout:      Number of seconds the Requests library will wait for nectar to
-                                     establish a connection with a remote machine. From the
-                                     Requests docs: 'It’s a good practice to set connect timeouts
-                                     to slightly larger than a multiple of 3, which is the default
-                                     TCP packet retransmission window.'
-        :type connect_timeout:       float
-        :param read_timeout:         The number of seconds the client will wait for the server to
-                                     send a response after an initial connection has already been
-                                     made.
+        :param timeout:              Number of seconds the Requests library will wait for nectar to
+                                     get a response from a remote machine. In future versions of
+                                     Requests, this is split into connect timeout and read timeout.
+                                     From the Requests docs: 'It’s a good practice to set connect
+                                     timeouts to slightly larger than a multiple of 3, which is the
+                                     default TCP packet retransmission window.'
         :type  headers:              dict
         """
         self.max_concurrent = max_concurrent
@@ -133,8 +130,7 @@ class DownloaderConfig(object):
         self.use_hard_links = use_hard_links
         self.use_sym_links = use_sym_links
         self._temp_files = []
-        self.connect_timeout = connect_timeout
-        self.read_timeout = read_timeout
+        self.timeout = timeout
 
         # concurrency options
         self._process_concurrency()
